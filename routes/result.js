@@ -8,10 +8,10 @@ router.get('/child', function (req, res, next) {
     let parentId = req.query.parentId;
     let childId = req.query.childId;
     let callback = req.query.callback;
-    console.log(parentId);
     demo.queryChildList(parentId, childId).then(function (result) {
         if (callback) {
             res.type("text/javascript");
+            console.log(result);
             var temp = {
                 code: 456,
                 data: result
