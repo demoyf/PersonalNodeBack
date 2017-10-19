@@ -45,7 +45,7 @@ router.get('/parent', function (req, res, next) {
 router.get('/person', function (req, res, next) {
     let callback = req.query.callback;
     var obj = {};
-    demo.queryPersonalList("all").then(function (result) {
+    demo.queryPersonalList().then(function (result) {
         obj.personal = result;
         demo.queryOtherTopSix().then(function (data) {
             obj.otherContent = data;
@@ -62,6 +62,23 @@ router.get('/person', function (req, res, next) {
         }).catch(function (err) {
             throw err;
         });
+    }).catch(function (err) {
+        throw err;
+    });
+});
+router.get('/allPersonal', function (req, res, next) {
+    let callback = req.query.callback;
+    demo.queryPersonalList("all").then(function (result) {
+        if (callback) {
+            res.type("text/javascript");
+            var temp = {
+                code: 789,
+                data: result
+            };
+            res.send(callback + '(' + JSON.stringify(temp) + ')');
+        } else {
+            res.json(result);
+        }
     }).catch(function (err) {
         throw err;
     });
@@ -87,4 +104,5 @@ router.get('/search', function (req, res, next) {
         throw err;
     });
 });
+
 module.exports = router;
